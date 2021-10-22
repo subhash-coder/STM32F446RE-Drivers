@@ -1,0 +1,90 @@
+/*
+ * main.c
+ *
+ *  Created on: Oct 14, 2021
+ *      Author: subhash
+ */
+
+
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+#include <strings.h>
+#include "stm32f446xx_GPIO.h"
+#include "stm32f446xx_UART.h"
+#include "stm32f446xx_ADC.h"
+#include "stm32f446xx_DAC.h"
+extern void initialise_monitor_handles(void);
+uint32_t val=0;
+DAC_INIT INit;
+int main(){
+ 	initialise_monitor_handles();
+	//ADC APB2
+	//ADC1
+	RCC->APB2ENR |=(1<<8);
+	__RCC_GPIOC_CLK_ENABLE();
+	//PC0 ADC123 channel 10
+	GPIO_INIT init;
+	init.GPIO_MODE=GPIO_MODE_ANALOG;
+	init.GPIO_OPTYPE=GPIO_PUSH_PULL;
+	init.GPIO_OP_PUSH_PULL=GPIO_PULL_DOWN;
+	init.GPIO_PIN=0;
+	init.GPIO_SPEED=GPIO_FAST_SPEED;
+	GPIO_init(GPIOC, init);
+
+	NVIC_EnableIRQ(ADC_IRQn);
+	ADC_INIT Init;
+	Init.ADC_SAMPLE_RATE=ADC_SAMPLE_480_CYCLES;
+	Init.ADC_channel=10;
+	ADC_init(ADC1, Init);
+	ADC_START(ADC1);
+
+	//****************************** DAC Enable ******************************//
+	GPIO_INIT INIT;
+    INIT.GPIO_MODE=GPIO_MODE_ANALOG;
+    INIT.GPIO_OPTYPE=GPIO_PUSH_PULL;
+    INIT.GPIO_OP_PUSH_PULL=GPIO_NO_PUSH_PULL;
+    INIT.GPIO_PIN=4;
+    INIT.GPIO_SPEED=GPIO_FAST_SPEED;
+    __RCC_GPIOA_CLK_ENABLE();
+    GPIO_init(GPIOA, INIT);
+
+    INit.channel=DAC_CHANNEL_1;
+    INit.software_trigger=DAC_SOFTWARE_TRIGGER_ENABLE;
+
+    DAC_init(DAC1,INit);
+	while(1){
+
+	}
+	return 0;
+}
+
+void ADC_IRQHandler(){
+	if(ADC1->SR & (1<<1)){
+		printf("%lu\n",DAC1->DOR1);
+
+		uint8_t temp= (val*255)/4096;
+		DAC_OUT(DAC1, temp,INit);
+
+		val=ADC1->DR;
+	}
+
+}
+
+//void USART2_IRQHandler(){
+//	//TXE
+//	if(USART2->SR & (1<<7)){
+//         //check
+//		if(i<=10){
+//			USART2->DR =*(k+i);
+//			i++;
+//		}
+//
+//	}
+//	//RXNE
+//	if(USART2->SR & (1<<5)){
+//		//read
+//		uint8_t ch=USART2->DR;
+//		printf("%c",ch);
+//	}
+//}

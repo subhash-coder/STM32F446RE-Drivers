@@ -1,0 +1,16 @@
+/*
+ * stm32f446xx_DAC.h
+ *
+ *  Created on: Oct 16, 2021
+ *      Author: subhash
+ */
+
+#ifndef STM32F4XX_HAL_DRIVER_INC_STM32F446XX_DAC_H_
+#define STM32F4XX_HAL_DRIVER_INC_STM32F446XX_DAC_H_
+
+#include "stm32f446xx.h"
+#include "stm32f446xx_GPIO.h"
+
+void DAC_INIT(DAC_TypeDef* DACx);
+
+#endif /* STM32F4XX_HAL_DRIVER_INC_STM32F446XX_DAC_H_ */

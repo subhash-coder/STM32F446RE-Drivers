@@ -1,0 +1,13 @@
+/*
+ * stm32f446xx_ADC.c
+ *
+ *  Created on: Oct 16, 2021
+ *      Author: subhash
+ */
+#include "stm32f446xx_ADC.h"
+
+void ADC_init(ADC_TypeDef* ADCx,ADC_INIT init){
+	//Enable end of the conversion
+	ADCx->CR1 |=(1<<5);
+}
+

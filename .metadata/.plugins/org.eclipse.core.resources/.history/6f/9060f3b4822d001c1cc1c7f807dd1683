@@ -1,0 +1,44 @@
+/*
+ * stm32f446xx_UART.h
+ *
+ *  Created on: Oct 14, 2021
+ *      Author: subhash
+ */
+
+#ifndef STM32F4XX_HAL_DRIVER_INC_STM32F446XX_UART_H_
+#define STM32F4XX_HAL_DRIVER_INC_STM32F446XX_UART_H_
+#include "stm32f446xx.h"
+typedef struct{
+	uint8_t USART_MODE;
+	uint32_t USART_BAUD;
+	uint32_t USART_NO_STOP_BITS;
+	uint32_t USART_WORD_LENGTH;
+	uint32_t USART_PARITY_CONTROL;
+	uint32_t USART_HWFLOW_CONTROL;
+}USART_INIT;
+
+#define USART_MODE_TX				0;
+#define USART_MODE_RX				1;
+#define USART_MODE_RX_TX			2;
+
+#define USART_BAUD_9600				9600
+#define USART_BAUD_19200			19200
+#define USART_BAUD_38400			38400
+#define USART_BAUD_57600			57600
+#define USART_BAUD_115200			115200
+#define USART_BAUD_230400			230400
+#define USART_BAUD_460800			460800
+#define USART_BAUD_921600			921600
+#define USART_BUAD 2M       		2000000
+#define USART_BAUD_3M				3000000
+
+#define USART_PARITY_EN_ODD 		1
+#define USART_PARITY_EN_EVEN		2
+#define USART_PARITY_DISABLE		3
+
+
+
+
+
+
+#endif /* STM32F4XX_HAL_DRIVER_INC_STM32F446XX_UART_H_ */

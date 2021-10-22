@@ -1,0 +1,4 @@
+stm32f446xx_TIMER.c:13:6:Timer_peripheral_clk	16	static
+stm32f446xx_TIMER.c:65:6:PWM_init	16	static
+stm32f446xx_TIMER.c:107:6:PWM_START	16	static
+stm32f446xx_TIMER.c:110:6:PWM_DUTY	16	static

@@ -1,0 +1,2 @@
+Never send stop bit more than once
+

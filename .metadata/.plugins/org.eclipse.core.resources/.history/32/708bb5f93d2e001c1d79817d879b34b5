@@ -1,0 +1,19 @@
+/*
+ * stm32f446xx_ADC.h
+ *
+ *  Created on: Oct 16, 2021
+ *      Author: subhash
+ */
+
+#ifndef STM32F4XX_HAL_DRIVER_INC_STM32F446XX_ADC_H_
+#define STM32F4XX_HAL_DRIVER_INC_STM32F446XX_ADC_H_
+
+typedef struct{
+
+}ADC_INIT;
+
+
+
+
+
+#endif /* STM32F4XX_HAL_DRIVER_INC_STM32F446XX_ADC_H_ */

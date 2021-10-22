@@ -1,0 +1,3 @@
+stm32f446xx_ADC.c:8:6:ADC_CLOCK_ENABLE	16	static
+stm32f446xx_ADC.c:21:6:ADC_init	40	static
+stm32f446xx_ADC.c:43:6:ADC_START	16	static

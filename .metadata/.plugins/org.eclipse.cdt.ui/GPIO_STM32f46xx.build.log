@@ -1,0 +1,24 @@
+09:43:22 **** Incremental Build of configuration Debug for project GPIO_STM32f46xx ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'I2C_read':
+../Core/Src/main.c:154:12: warning: variable 'temp' set but not used [-Wunused-but-set-variable]
+  154 |   uint32_t temp;
+      |            ^~~~
+arm-none-eabi-gcc -o "GPIO_STM32f46xx.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\HP\Desktop\MY_WORKSPACE\GPIO_STM32f46xx\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="GPIO_STM32f46xx.map" -Wl,--gc-sections -static -specs=rdimon.specs -lc -lrdimon -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: GPIO_STM32f46xx.elf
+ 
+arm-none-eabi-objdump -h -S  GPIO_STM32f46xx.elf  > "GPIO_STM32f46xx.list"
+arm-none-eabi-objcopy  -O binary  GPIO_STM32f46xx.elf  "GPIO_STM32f46xx.bin"
+arm-none-eabi-size   GPIO_STM32f46xx.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18836	    488	   1768	  21092	   5264	GPIO_STM32f46xx.elf
+Finished building: default.size.stdout
+ 
+Finished building: GPIO_STM32f46xx.bin
+ 
+Finished building: GPIO_STM32f46xx.list
+ 
+
+09:43:24 Build Finished. 0 errors, 1 warnings. (took 2s.765ms)
+

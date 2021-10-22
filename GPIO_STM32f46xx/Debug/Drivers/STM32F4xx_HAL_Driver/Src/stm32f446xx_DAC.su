@@ -1,0 +1,2 @@
+stm32f446xx_DAC.c:8:6:DAC_init	16	static
+stm32f446xx_DAC.c:35:6:DAC_OUT	24	static

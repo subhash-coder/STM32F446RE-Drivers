@@ -1,0 +1,20 @@
+/*
+ * stm32f446xx_I2C.c
+ *
+ *  Created on: Oct 19, 2021
+ *      Author: subhash
+ */
+
+#include "stm32f446xx_I2C.h"
+
+void I2C_peripheral_clk(I2C_TypeDef* I2Cx){
+	if(I2Cx ==I2C1){
+		RCC->APB1ENR |=(1<<21);
+	}
+	else if(I2Cx == I2C2){
+		RCC->APB1ENR |=(1<<22);
+	}
+	else{
+		RCC->APB1ENR |=(1<<23);
+	}
+}

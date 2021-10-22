@@ -1,0 +1,66 @@
+/*
+ * stm32f446xx_UART.c
+ *
+ *  Created on: Oct 14, 2021
+ *      Author: subhash
+ */
+
+#include "stm32f446xx_UART.h"
+
+void USART_init(USART_TypeDef* USARTx,USART_INIT init){
+	//1.setup mode tx or rx
+	if(init.USART_MODE == USART_MODE_TX){
+		USARTx->CR1 |=(1<<3);
+	}
+	else if(init.USART_MODE == USART_MODE_RX){
+		USARTx->CR1 |=(1<<2);
+	}
+	else{
+		USARTx->CR1 |=(1<<3);
+		USARTx->CR1 |=(1<<2);
+	}
+	//2.setup baud
+	if(init.USART_BAUD ==USART_BAUD_9600){
+			//for over sampling 16
+		 	//Setting up USARTDIV
+		    USARTx->BRR |=(104<<4);
+		    USARTx->BRR |=(2);
+	}
+	else if(init.USART_BAUD==USART_BAUD_115200){
+			USARTx->BRR |=(8<<4);
+			USARTx->BRR |=(10);
+	}
+	//3.No of stop bits
+	if(init.USART_NO_STOP_BITS==USART_STOPBITS_0_5){
+		USARTx->CR2 |=(1<<12);
+	}
+	else if(init.USART_NO_STOP_BITS == USART_STOPBITS_2){
+		USARTx->CR2 |=(2<<12);
+	}
+	else if(init.USART_NO_STOP_BITS == USART_STOPBITS_1_5){
+		USARTx->CR2 |=(3<<12);
+	}
+	//4.word length
+	if(init.USART_WORD_LENGTH == USART_WORDLEN_9BITS){
+		USARTx->CR1 |=(1<<12);
+	}
+	//5.parity control
+	if(init.USART_PARITY_CONTROL == USART_PARITY_ENABLE){
+		USARTx->CR1 |=(1<<10);
+	}
+	//6.Hardware flow control
+	if(init.USART_HWFLOW_CONTROL == USART_HW_FLOW_CTRL_CTS){
+		USARTx->CR3 |=(1<<9);
+	}
+	else if(init.USART_HWFLOW_CONTROL == USART_HW_FLOW_CTRL_RTS){
+		USARTx->CR3 |=(1<<8);
+	}
+	else if(init.USART_HWFLOW_CONTROL == USART_HW_FLOW_CTRL_CTS_RTS){
+		USARTx->CR3 |=(1<<9);
+		USARTx->CR3 |=(1<<8);
+	}
+}
+
+void USART_TX(USART_TypeDef* USARTx,uint8_t data){
+	USARTx->DR=data;
+}

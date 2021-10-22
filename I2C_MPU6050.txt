@@ -1,0 +1,160 @@
+/*
+ * main.c
+ *
+ *  Created on: Oct 14, 2021
+ *      Author: subhash
+ */
+
+
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+#include <strings.h>
+#include "stm32f446xx_GPIO.h"
+#include "stm32f446xx_UART.h"
+#include "stm32f446xx_ADC.h"
+#include "stm32f446xx_DAC.h"
+#include "stm32f446xx_TIMER.h"
+#include "stm32f446xx_I2C.h"
+extern void initialise_monitor_handles(void);
+uint16_t msTicks=0;
+void delayMs(uint16_t Ms){
+	msTicks=0;
+	while(msTicks<Ms);
+}
+#define MPU6050_REG_POWER			0x6B
+#define MPU6050_REG_ACCEL_CONFIG	0x1C
+#define MPU6050_REG_GYRO_CONFIG		0x1B
+//These are the MPU6050_address of mpu6050 from which you will fetch accelerometer x,y,x high and low values
+#define MPU6050_REG_ACC_X_HIGH		0x3B
+#define MPU6050_REG_ACC_X_LOW		0x3C
+#define MPU6050_REG_ACC_Y_HIGH		0x3D
+#define MPU6050_REG_ACC_Y_LOW		0x3E
+#define MPU6050_REG_ACC_Z_HIGH		0x3F
+#define MPU6050_REG_ACC_Z_LOW		0x40
+//These are the MPU6050_addresses of mpu6050 from which you will fetch gyro x,y,x high and low values
+#define MPU6050_REG_GYRO_X_HIGH		0x43
+#define MPU6050_REG_GYRO_X_LOW		0x44
+#define MPU6050_REG_GYRO_Y_HIGH		0x45
+#define MPU6050_REG_GYRO_Y_LOW		0x46
+#define MPU6050_REG_GYRO_Z_HIGH		0x47
+#define MPU6050_REG_GYRO_Z_LOW		0x48
+/*
+ * Different full scale ranges for acc and gyro
+ * refer table 6.2 and 6.3 in the document MPU-6050 Product Specification Reveision 3.4
+ */
+#define ACC_FS_SENSITIVITY_0		16384
+#define ACC_FS_SENSITIVITY_1		8192
+#define ACC_FS_SENSITIVITY_2		4096
+#define ACC_FS_SENSITIVITY_3		2048
+
+#define GYR_FS_SENSITIVITY_0		131
+#define GYR_FS_SENSITIVITY_1		65.5
+#define GYR_FS_SENSITIVITY_2		32.8
+#define GYR_FS_SENSITIVITY_3		16.4
+
+/*This is the I2C slave address of mpu6050 sensor*/
+uint8_t MPU6050_address=0x68;
+
+#define MAX_VALUE	50
+void mpu6050_write(uint8_t register_address,uint8_t data);
+void mpu6050_read(uint8_t register_address,uint8_t* data);
+void mpu6050_init(I2C_TypeDef* I2Cx);
+void I2C1_init();
+void mpu6050_read_acc(short* acc);
+void mpu6050_read_gyro(short* gyro);
+int main(){
+ 	initialise_monitor_handles();
+ 	I2C1_init();
+    mpu6050_init(I2C1);
+    uint8_t data;
+    mpu6050_read(117, &data);
+    printf("%u\n",data);
+//
+//    short* acc;
+//    mpu6050_read_acc(acc);
+//    for(int i=0;i<3;i++){
+//    	printf("%lu\n",acc);
+//    	acc++;
+//    }
+}
+void SysTick_Handler(void){
+	msTicks++;
+}
+void mpu6050_init(I2C_TypeDef* I2Cx){
+	//1. disable sleep mode
+	mpu6050_write(MPU6050_REG_POWER,0x00);
+	delayMs(500);
+	//2. adjust full scale values for gyro and acc
+	mpu6050_write(MPU6050_REG_ACCEL_CONFIG, 0x18);
+	delayMs(500);
+	mpu6050_write(MPU6050_REG_GYRO_CONFIG, 0x18);
+	delayMs(500);
+
+}
+void mpu6050_write(uint8_t register_address,uint8_t data){
+	I2C_start(I2C1);
+	I2C_write_init(I2C1, MPU6050_address);
+	I2C_send(I2C1,register_address);
+	I2C_send(I2C1, data);
+	I2C_stop(I2C1);
+}
+void mpu6050_read(uint8_t register_address,uint8_t* data){
+	I2C_start(I2C1);
+	I2C_write_init(I2C1, MPU6050_address);
+	I2C_send(I2C1, register_address);
+	I2C_start(I2C1);
+	I2C_read_init(I2C1,MPU6050_address);
+	I2C_receive(I2C1,data);
+	//dont forgot to disable nack if its ack outside of this function
+}
+void I2C1_init(){
+	__RCC_GPIOB_CLK_ENABLE();
+	 	GPIO_INIT init;
+	 	init.GPIO_ALTFUNC=4;
+	 	init.GPIO_MODE=GPIO_MODE_ALT;
+	 	init.GPIO_OPTYPE=GPIO_OPEN_DRAIN;
+	 	init.GPIO_OP_PUSH_PULL=GPIO_PULL_UP;
+	 	init.GPIO_PIN=6;
+	 	init.GPIO_SPEED=GPIO_FAST_SPEED;
+	    GPIO_ALT_INIT(GPIOB, init);
+	    GPIO_init(GPIOB, init);
+	    init.GPIO_PIN=7;
+	    GPIO_ALT_INIT(GPIOB, init);
+	    GPIO_init(GPIOB, init);
+	    I2C_init(I2C1);
+}
+void mpu6050_read_mul(uint8_t register_address,uint8_t* data,uint8_t count){
+		I2C_Enable_ACK(I2C1);
+		I2C_start(I2C1);
+		I2C_write_init(I2C1, MPU6050_address);
+		I2C_send(I2C1, register_address);
+		I2C_start(I2C1);
+		I2C_read_init(I2C1,MPU6050_address);
+		for(int i=0;i<count;i++){
+			if(i==(count-3)){
+				//set POS
+				I2C1->CR1 |=(1<<11);
+				//disable ack
+				I2C_Disable_ACK(I2C1);
+			}
+			I2C_receive(I2C1, data);
+			data++;
+		}
+		I2C_stop(I2C1);
+
+}
+void mpu6050_read_acc(short* acc){
+	uint8_t acc_buffer[6];
+
+	mpu6050_read_mul(MPU6050_address, acc_buffer, 6);
+	int k=0;
+	for(int i=0;i<3;i++){
+		acc[i]|=acc_buffer[k++]<<8;
+		acc[i] |=acc_buffer[k++];
+	}
+
+}
+void mpu6050_read_gyro(short* gyro){
+
+}

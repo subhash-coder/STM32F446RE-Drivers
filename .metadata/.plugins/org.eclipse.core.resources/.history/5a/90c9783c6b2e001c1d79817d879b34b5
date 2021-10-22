@@ -1,0 +1,19 @@
+/*
+ * stm32f446xx_DAC.c
+ *
+ *  Created on: Oct 16, 2021
+ *      Author: subhash
+ */
+#include "stm32f446xx_DAC.h"
+void DAC_INIT(DAC_TypeDef* DACx){
+	//DAC RCC Enable
+	RCC->APB1ENR |=(1<<29);
+	//Trigger enable
+	DAC1->CR |=(1<<2);
+	//mode of trigger
+	DAC1->CR |=(7<<3);
+	//DAC ENABLE
+	DAC1->CR |=1;
+	//DAC ENABLE for second time
+	DAC1->CR |=1;
+}

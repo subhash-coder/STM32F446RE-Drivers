@@ -1,0 +1,28 @@
+/*
+ * main.c
+ *
+ *  Created on: Oct 22, 2021
+ *      Author: subhash
+ */
+
+
+#include "stm32f446xx.h"
+#include "stm32f446xx_GPIO.h"
+#include "stm32f446xx_UART.h"
+#include "stm32f446xx_TIMER.h"
+#include <stdio.h>
+extern void initialise_monitor_handles(void);
+
+int main(){
+	initialise_monitor_handles();
+	uint8_t var =8;
+	uint8_t var1;
+	var1=2;
+//	var1=(uint8_t*)0x20000008;
+	__asm ("MOV %0,%1":"=r"(var1):"r"(var));
+	printf("%lu\n",var1);
+
+ 	while(1);
+
+	return 0;
+}

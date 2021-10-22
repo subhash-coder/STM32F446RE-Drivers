@@ -1,0 +1,28 @@
+/*
+ * stm32f446xx_TIMER.h
+ *
+ *  Created on: Oct 17, 2021
+ *      Author: subhash
+ */
+
+#ifndef STM32F4XX_HAL_DRIVER_INC_STM32F446XX_TIMER_H_
+#define STM32F4XX_HAL_DRIVER_INC_STM32F446XX_TIMER_H_
+#include "stm32f446xx.h"
+#include "stm32f446xx_GPIO.h"
+//TIMER
+//TIM2->PSC=1000;
+// 	TIM2->ARR=3200;
+// 	TIM2->CR1 |=1;
+//1 to 8
+//2 to 5
+//9 to 14
+//contains PWM
+
+typedef struct{
+
+}PWM_INIT;
+
+void PWM_init(TIM_TypeDef* TIMx);
+
+
+#endif /* STM32F4XX_HAL_DRIVER_INC_STM32F446XX_TIMER_H_ */

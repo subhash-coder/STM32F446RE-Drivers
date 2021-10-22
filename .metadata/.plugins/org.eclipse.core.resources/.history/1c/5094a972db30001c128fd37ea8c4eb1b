@@ -1,0 +1,15 @@
+/*
+ * stm32f446xx_I2C.h
+ *
+ *  Created on: Oct 19, 2021
+ *      Author: subhash
+ */
+
+#ifndef STM32F4XX_HAL_DRIVER_INC_STM32F446XX_I2C_H_
+#define STM32F4XX_HAL_DRIVER_INC_STM32F446XX_I2C_H_
+
+void I2C_init(I2C_TypeDef* I2Cx);
+
+
+
+#endif /* STM32F4XX_HAL_DRIVER_INC_STM32F446XX_I2C_H_ */

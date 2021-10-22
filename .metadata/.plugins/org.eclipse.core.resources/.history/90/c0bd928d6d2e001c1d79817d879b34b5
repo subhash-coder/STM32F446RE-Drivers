@@ -1,0 +1,34 @@
+/*
+ * stm32f446xx_DAC.c
+ *
+ *  Created on: Oct 16, 2021
+ *      Author: subhash
+ */
+#include "stm32f446xx_DAC.h"
+void DAC_init(DAC_TypeDef* DACx,DAC_INIT init){
+	//DAC RCC Enable
+	RCC->APB1ENR |=(1<<29);
+	if(init.software_trigger==DAC_SOFTWARE_TRIGGER_ENABLE){
+		//Trigger enable
+		DACx->CR |=(1<<2);
+		//mode of trigger
+		DACx->CR |=(7<<3);
+	}
+	//DAC ENABLE
+	DACx->CR |=1;
+
+}
+
+void DAC_OUT(DAC_TypeDef* DACx,uint8_t data,DAC_INIT init){
+	//printf("%lu\n",val);
+	//use this formula to set into 1byte
+	//(val*255)/4096;
+	//DAC_DHR8R1
+	DACx->DHR8R1 = data;
+	if(init.software_trigger==DAC_SOFTWARE_TRIGGER_ENABLE){
+		//DAC SWTRIGER
+		DACx->SWTRIGR |=1;
+		while((DACx->SWTRIGR & 1));
+	}
+
+}

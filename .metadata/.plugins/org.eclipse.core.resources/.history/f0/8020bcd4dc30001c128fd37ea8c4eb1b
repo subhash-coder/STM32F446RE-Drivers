@@ -1,0 +1,8 @@
+/*
+ * stm32f446xx_I2C.c
+ *
+ *  Created on: Oct 19, 2021
+ *      Author: subhash
+ */
+
+#include "stm32f446xx_I2C.h"

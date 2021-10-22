@@ -1,0 +1,6 @@
+stm32f446xx_UART.c:10:6:USART_CLK_ENABLE	16	static
+stm32f446xx_UART.c:27:6:USART_init	16	static
+stm32f446xx_UART.c:82:6:USART_TX	16	static
+stm32f446xx_UART.c:88:6:USART_RX	24	static
+stm32f446xx_UART.c:95:6:USART_ENABLE	16	static
+stm32f446xx_UART.c:99:6:UART2_INIT	64	static

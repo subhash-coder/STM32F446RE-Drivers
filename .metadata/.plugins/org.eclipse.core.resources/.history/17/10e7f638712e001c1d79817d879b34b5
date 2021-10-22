@@ -1,0 +1,28 @@
+/*
+ * main.c
+ *
+ *  Created on: Oct 14, 2021
+ *      Author: subhash
+ */
+
+
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+#include <strings.h>
+#include "stm32f446xx_GPIO.h"
+#include "stm32f446xx_UART.h"
+#include "stm32f446xx_ADC.h"
+#include "stm32f446xx_DAC.h"
+extern void initialise_monitor_handles(void);
+uint32_t val=0;
+DAC_INIT INit;
+//timers
+//TIM2-5 APB1
+int main(){
+ 	initialise_monitor_handles();
+ 	//TIM2 in 0 RCC APB1ENR
+ 	RCC->APB1ENR |=1;
+
+
+}

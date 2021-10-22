@@ -1,0 +1,59 @@
+/*
+ * main.c
+ *
+ *  Created on: Oct 14, 2021
+ *      Author: subhash
+ */
+
+
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+#include <strings.h>
+#include "stm32f446xx_GPIO.h"
+#include "stm32f446xx_UART.h"
+#include "stm32f446xx_ADC.h"
+#include "stm32f446xx_DAC.h"
+#include "stm32f446xx_TIMER.h"
+extern void initialise_monitor_handles(void);
+uint32_t val=0;
+DAC_INIT INit;
+//timers
+//TIM4-5 APB1
+int main(){
+ 	initialise_monitor_handles();
+
+    __RCC_GPIOB_CLK_ENABLE();
+    GPIO_INIT init;
+    init.GPIO_ALTFUNC=1;
+    init.GPIO_MODE=GPIO_MODE_ALT;
+    init.GPIO_OPTYPE=GPIO_PUSH_PULL;
+    init.GPIO_OP_PUSH_PULL=GPIO_NO_PUSH_PULL;
+    init.GPIO_PIN=3;
+    init.GPIO_SPEED=GPIO_HIGH_SPEED;
+    GPIO_ALT_INIT(GPIOB, init);
+    GPIO_init(GPIOB, init);
+    PWM_INIT Init;
+    Init.ARR=800;
+    Init.PSC=20;
+    Init.CCR=400;
+    Init.PWM_MODE=PWM_MODE_1;
+    Init.channel=2;
+    PWM_init(TIM2, Init);
+    PWM_START(TIM2);
+
+    int k=2;
+    uint32_t temp=400;
+ 	while(1){
+ 		TIM2->CCR2=temp;
+ 		if(temp>=700){
+ 			k*=-1;
+ 		}
+ 		if(temp<=100){
+ 			k*=-1;
+ 		}
+ 		for(int i=0;i<5000;i++);
+ 		temp+=k;
+
+ 	}
+}

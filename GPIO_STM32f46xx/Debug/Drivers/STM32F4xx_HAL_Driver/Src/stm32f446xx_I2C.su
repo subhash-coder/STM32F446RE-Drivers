@@ -1,0 +1,11 @@
+stm32f446xx_I2C.c:10:6:I2C_peripheral_clk	16	static
+stm32f446xx_I2C.c:21:6:I2C_init	16	static
+stm32f446xx_I2C.c:41:6:I2C_write_init	24	static
+stm32f446xx_I2C.c:48:6:I2C_read_init	24	static
+stm32f446xx_I2C.c:54:6:I2C_start	16	static
+stm32f446xx_I2C.c:59:6:I2C_stop	16	static
+stm32f446xx_I2C.c:63:6:I2C_send	16	static
+stm32f446xx_I2C.c:68:6:I2C_receive	16	static
+stm32f446xx_I2C.c:72:6:I2C_deinit	16	static
+stm32f446xx_I2C.c:75:6:I2C_Disable_ACK	16	static
+stm32f446xx_I2C.c:78:6:I2C_Enable_ACK	16	static
